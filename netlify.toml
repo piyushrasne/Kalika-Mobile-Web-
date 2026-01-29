@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+  command = ""
+
+# Redirects are only needed for Single Page Apps (SPA) checking client side routing
+# Since you have admin.html and index.html as separate files, we can disable this for now 
+# to ensure simple file serving works correctly.
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200

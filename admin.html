@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Kalika Mobile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .login-box,
+        .dashboard-box {
+            background: var(--card-bg);
+            border: var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .dashboard-box {
+            max-width: 900px;
+            text-align: left;
+            display: none;
+            /* Hidden initially */
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            font-weight: bold;
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .item-list {
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .action-btn.delete {
+            color: #ff4757;
+        }
+
+        .action-btn.edit {
+            color: var(--accent-blue);
+        }
+
+        .search-bar {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            width: 18px;
+        }
+
+        .search-bar input {
+            padding-left: 2.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero-bg-glow" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);"></div>
+
+    <div class="admin-container">
+
+        <!-- Login Section -->
+        <div class="login-box" id="login-section">
+            <h2>Admin Login</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter your secure PIN</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="password" id="admin-pin" class="form-control" placeholder="••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard-box" id="dashboard-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                <h2>Kalika Admin</h2>
+                <button onclick="logout()" class="btn btn-secondary"
+                    style="padding:0.5rem 1rem; font-size:0.8rem;">Logout</button>
+            </div>
+
+            <nav class="tab-nav">
+                <button class="nav-btn" data-tab="products"><i data-lucide="package"></i> Products</button>
+                <button class="nav-btn" data-tab="hero"><i data-lucide="image"></i> Hero Slider</button>
+                <button class="nav-btn" data-tab="categories"><i data-lucide="list"></i> Categories</button>
+                <button class="nav-btn" data-tab="analytics"><i data-lucide="bar-chart-2"></i> Analytics</button>
+                <button class="nav-btn" data-tab="settings"><i data-lucide="settings"></i> Settings</button>
+            </nav>
+
+            <!-- Product Management -->
+            <div id="tab-products" class="tab-content active">
+                <h3>Manage Products</h3>
+                <form id="product-form"
+                    style="margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <input type="hidden" id="p-id"> <!-- Hidden ID for Editing -->
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="p-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="p-price" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Description / Specs</label>
+                        <textarea id="p-desc" class="form-control" rows="3"
+                            placeholder="e.g. 30h Battery, Bluetooth 5.3..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="p-cat" class="form-control">
+                            <!-- Populated Dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <input type="file" id="p-image-file" class="form-control" accept="image/*">
+                        <input type="text" id="p-image-url" class="form-control" placeholder="OR Paste URL"
+                            style="margin-top: 0.5rem;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="grid-column: span 2;" id="p-submit-btn">Add
+                        Product</button>
+                </form>
+
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 2rem 0;">
+
+                <div class="search-bar">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="p-search" class="form-control" placeholder="Search products..."
+                        oninput="renderLists()">
+                </div>
+
+                <div class="item-list" id="product-list">
+                    <!-- Products injected here -->
+                </div>
+            </div>
+
+            <!-- Categories Management -->
+            <div id="tab-categories" class="tab-content">
+                <h3>Manage Categories</h3>
+                <form id="cat-form" style="margin-top: 1rem; display: flex; gap: 1rem;">
+                    <input type="text" id="new-cat-name" class="form-control" placeholder="New Category Name" required>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+                <div class="item-list" id="category-list">
+                    <!-- Categories injected here -->
+                </div>
+            </div>
+
+            <!-- Hero Slider Management -->
+            <div id="tab-hero" class="tab-content">
+                <h3>Manage Slider</h3>
+                <form id="slide-form" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="s-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subtitle</label>
+                        <input type="text" id="s-subtitle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Slide Image</label>
+                        <input type="file" id="slide-file" accept="image/*">
+                        <input type="text" id="slide-image" placeholder="Or Image URL" style="margin-top: 10px;">
+                    </div>
+
+                    <!-- Extended Features -->
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <h4 style="color: var(--accent-blue); margin-bottom: 10px;">Feature 1</h4>
+                        <div class="form-group">
+                            <input type="text" id="slide-f1-title" placeholder="Title (e.g. Noise Cancellation)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="slide-f1-desc" placeholder="Desc (e.g. Block out the world...)">
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <h4 style="color: var(--accent-blue); margin-bottom: 10px;">Feature 2</h4>
+                        <div class="form-group">
+                            <input type="text" id="slide-f2-title" placeholder="Title (e.g. 40h Battery)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="slide-f2-desc" placeholder="Desc (e.g. Non-stop music...)">
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <h4 style="color: var(--accent-blue); margin-bottom: 10px;">Feature 3</h4>
+                        <div class="form-group">
+                            <input type="text" id="slide-f3-title" placeholder="Title (e.g. Bluetooth 5.3)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="slide-f3-desc" placeholder="Desc (e.g. Seamless connectivity...)">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="add-slide-btn">Add Slide</button>
+                </form>
+
+                <div class="item-list" id="slide-list">
+                    <!-- Slides injected here -->
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analytics" class="tab-content">
+                <div class="header-flex">
+                    <h2>Visitor Analytics (Secret)</h2>
+                    <button class="btn-secondary" onclick="clearAnalytics()"><i data-lucide="trash-2"></i> Clear
+                        Logs</button>
+                </div>
+
+                <div class="card-grid" style="grid-template-columns: 1fr; gap: 0;">
+                    <div class="product-card" style="padding: 0; overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <th style="padding: 15px;">Time</th>
+                                    <th style="padding: 15px;">Device</th>
+                                    <th style="padding: 15px;">Platform</th>
+                                    <th style="padding: 15px;">Resolution</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-table-body">
+                                <!-- Rows Rendered Here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings (Logo) -->
+            <div id="tab-settings" class="tab-content">
+                <h3>Website Settings</h3>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Website Logo</label>
+                    <img id="current-logo-preview" src="" style="max-height: 50px; margin-bottom: 1rem;">
+                    <input type="file" id="logo-file" class="form-control" accept="image/*">
+                    <button onclick="updateLogo()" class="btn btn-primary" style="margin-top: 1rem;">Update
+                        Logo</button>
+                    <button onclick="resetLogo()" class="btn btn-secondary"
+                        style="margin-top: 1rem; margin-left: 1rem;">Reset to Default</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
