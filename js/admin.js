@@ -278,7 +278,15 @@ window.deleteSlide = (id) => {
     if (!confirm("Are you sure you want to delete this slide?")) return;
     let slides = JSON.parse(localStorage.getItem('heroSlides')) || [];
     // Robust comparison using String() to avoid type number/string mismatch
+    const originalLength = slides.length;
     slides = slides.filter(s => String(s.id) !== String(id));
+
+    if (slides.length === originalLength) {
+        console.warn("Delete failed - No ID match found for:", id);
+        // Fallback: try number comparison if string failed (unlikely but safe)
+        slides = slides.filter(s => s.id != id);
+    }
+
     localStorage.setItem('heroSlides', JSON.stringify(slides));
     renderLists();
 }

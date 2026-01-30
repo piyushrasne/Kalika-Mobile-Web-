@@ -495,8 +495,15 @@ function updateWishlistCount() {
 
 // Product Details Modal
 window.openProductDetails = (id) => {
-    const product = products.find(p => p.id === id);
-    if (!product) return;
+    // 1. Use loose equality (==) or String(p.id) === String(id) to handle number/string mismatch
+    const product = products.find(p => p.id == id);
+
+    console.log("Opening details for ID:", id, "Found:", product); // Logic Debug
+
+    if (!product) {
+        console.error("Product not found with ID:", id);
+        return;
+    }
 
     mImage.src = product.image;
     mCat.textContent = product.category;
@@ -505,7 +512,7 @@ window.openProductDetails = (id) => {
     mDesc.textContent = product.desc || "No description available for this product.";
 
     // Update Buy Button in modal
-    mBuyBtn.onclick = () => buyProduct(id);
+    mBuyBtn.onclick = () => buyProduct(product.id); // Use found product ID to be safe
 
     modal.classList.add('active');
 }

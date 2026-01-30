@@ -1169,3 +1169,74 @@ footer {
         transform: translate(0);
     }
 }
+
+/* --- Added List Item Styles for Wishlist & Admin consistency --- */
+.item-list {
+    margin-top: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    color: var(--text-muted);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    transform: scale(1.1);
+}
+
+.action-btn.delete:hover {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+}
+
+.action-btn.edit:hover {
+    background: rgba(0, 243, 255, 0.2);
+    color: var(--accent-blue);
+}
+
+/* Admin Mobile Fixes */
+@media (max-width: 768px) {
+    .dashboard-box {
+        padding-bottom: 120px !important;
+        /* Ensure content isn't hidden behind bottom nav or cutoff */
+    }
+
+    #slide-form {
+        margin-bottom: 50px;
+        /* Spacing for button */
+    }
+}
