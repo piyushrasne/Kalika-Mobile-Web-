@@ -195,26 +195,99 @@ window.deleteCategory = (cat) => {
 }
 
 // --- Slider ---
-slideForm.addEventListener('submit', (e) => {
+// --- Slider ---
+slideForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const slides = JSON.parse(localStorage.getItem('heroSlides')) || [];
-    const newSlide = {
-        id: Date.now(),
-        title: document.getElementById('s-title').value,
-        subtitle: document.getElementById('s-subtitle').value,
-        image: document.getElementById('s-image').value
-    };
-    slides.push(newSlide);
+    const id = document.getElementById('s-id').value;
+    const title = document.getElementById('s-title').value;
+    const subtitle = document.getElementById('s-subtitle').value;
+    const fileInput = document.getElementById('slide-file');
+    const urlInput = document.getElementById('slide-image');
+
+    // Extended Features
+    const f1Title = document.getElementById('slide-f1-title').value;
+    const f1Desc = document.getElementById('slide-f1-desc').value;
+    const f2Title = document.getElementById('slide-f2-title').value;
+    const f2Desc = document.getElementById('slide-f2-desc').value;
+    const f3Title = document.getElementById('slide-f3-title').value;
+    const f3Desc = document.getElementById('slide-f3-desc').value;
+
+    let imageSrc = urlInput.value;
+    if (fileInput.files.length > 0) {
+        imageSrc = await fileToBase64(fileInput.files[0]);
+    }
+
+    let slides = JSON.parse(localStorage.getItem('heroSlides')) || [];
+
+    if (id) {
+        // Edit Mode
+        const index = slides.findIndex(s => String(s.id) === String(id));
+        if (index !== -1) {
+            slides[index] = {
+                ...slides[index],
+                title, subtitle,
+                f1Title, f1Desc,
+                f2Title, f2Desc,
+                f3Title, f3Desc
+            };
+            if (imageSrc) slides[index].image = imageSrc;
+            alert("Slide Updated!");
+        }
+    } else {
+        // Add Mode
+        const newSlide = {
+            id: Date.now().toString(), // String ID for safety
+            title, subtitle, image: imageSrc,
+            f1Title, f1Desc,
+            f2Title, f2Desc,
+            f3Title, f3Desc
+        };
+        slides.push(newSlide);
+        alert("Slide Added!");
+    }
+
     localStorage.setItem('heroSlides', JSON.stringify(slides));
     renderLists();
-    slideForm.reset();
+    resetSlideForm();
 });
 
+window.editSlide = (id) => {
+    const slides = JSON.parse(localStorage.getItem('heroSlides')) || [];
+    const s = slides.find(slide => String(slide.id) === String(id));
+    if (!s) return;
+
+    document.getElementById('s-id').value = s.id;
+    document.getElementById('s-title').value = s.title;
+    document.getElementById('s-subtitle').value = s.subtitle;
+    document.getElementById('slide-image').value = s.image || "";
+
+    // Populate Extended Features
+    document.getElementById('slide-f1-title').value = s.f1Title || "";
+    document.getElementById('slide-f1-desc').value = s.f1Desc || "";
+    document.getElementById('slide-f2-title').value = s.f2Title || "";
+    document.getElementById('slide-f2-desc').value = s.f2Desc || "";
+    document.getElementById('slide-f3-title').value = s.f3Title || "";
+    document.getElementById('slide-f3-desc').value = s.f3Desc || "";
+
+    document.getElementById('s-submit-btn').textContent = "Update Slide";
+    document.getElementById('s-cancel-btn').style.display = "inline-block";
+    slideForm.scrollIntoView({ behavior: 'smooth' });
+}
+
 window.deleteSlide = (id) => {
+    if (!confirm("Are you sure you want to delete this slide?")) return;
     let slides = JSON.parse(localStorage.getItem('heroSlides')) || [];
-    slides = slides.filter(s => s.id != id);
+    // Robust comparison using String() to avoid type number/string mismatch
+    slides = slides.filter(s => String(s.id) !== String(id));
     localStorage.setItem('heroSlides', JSON.stringify(slides));
     renderLists();
+}
+
+window.resetSlideForm = () => {
+    slideForm.reset();
+    document.getElementById('s-id').value = "";
+    document.getElementById('s-submit-btn').textContent = "Add Slide";
+    document.getElementById('s-cancel-btn').style.display = "none";
 }
 
 // --- Settings (Logo) ---
@@ -279,7 +352,11 @@ window.renderLists = () => {
             <div>
                 <strong>${s.title}</strong>
             </div>
-            <button class="action-btn delete" onclick="deleteSlide(${s.id})"><i data-lucide="trash-2"></i></button>
+            <div>
+                <button class="action-btn edit" onclick="editSlide('${s.id}')"><i data-lucide="edit-2"></i></button>
+                <!-- Use String ID in call to avoid JS number interpretation issues -->
+                <button class="action-btn delete" onclick="deleteSlide('${s.id}')"><i data-lucide="trash-2"></i></button>
+            </div>
         </div>
     `).join('');
 

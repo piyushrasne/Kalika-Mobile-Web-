@@ -897,8 +897,38 @@ footer {
 
 @media (max-width: 768px) {
 
+    /* Navigation */
+    .mobile-menu-btn {
+        display: block;
+        /* Show hamburger */
+        z-index: 1001;
+    }
+
     .nav-links {
-        display: none;
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transform: translateY(-100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+    }
+
+    .nav-links a {
+        font-size: 1.5rem;
+        font-weight: 600;
     }
 
     .nav-actions {
@@ -906,24 +936,31 @@ footer {
         gap: 0.5rem;
         align-items: center;
         flex-shrink: 0;
+        z-index: 1000;
+        /* Keep actions above menu background if needed, or adjust */
     }
 
+    /* Adjust search box for mobile */
     .search-box {
         padding: 0 0.5rem;
         width: auto;
+        background: transparent;
+        border: none;
     }
 
     .search-box input {
-        width: 80px;
-        /* Bigger start width */
-        font-size: 0.8rem;
+        display: none;
+        /* Hide input on mobile to save space, rely on icon or expander if implemented. Or keep small. */
     }
 
-    .search-box input:focus {
-        width: 140px;
-        /* Expand on mobile */
+    /* If we want search to be visible but small: */
+    .search-box input.mobile-visible {
+        display: block;
+        width: 100px;
+        background: rgba(255, 255, 255, 0.1);
     }
 
+    /* Container adjustments */
     .nav-container {
         padding: 0 1rem;
         gap: 0.5rem;
@@ -936,9 +973,9 @@ footer {
         align-items: center;
         overflow: hidden;
         white-space: nowrap;
+        z-index: 1001;
     }
 
-    /* Hide text on very small screens if needed, or keeping it but ensuring no break */
     .logo span {
         display: none;
         /* Hide text on mobile to save space */
@@ -948,15 +985,12 @@ footer {
         height: 35px !important;
     }
 
-    .shop-layout {
-        grid-template-columns: 1fr;
-    }
-
+    /* Hero Section Mobile */
     .hero-section {
         padding-top: 100px;
         padding-bottom: 60px;
-        /* Space for dots */
         min-height: auto;
+        /* Let content dictate height, min-height 90vh is too big on mobile often */
         text-align: center;
     }
 
@@ -968,171 +1002,6 @@ footer {
 
     .hero-text h1 {
         font-size: 2.5rem;
-    }
-
-    .slider-dots {
-        bottom: 10px;
-        /* Position dots better on mobile */
-    }
-}
-
-/* End of media query */
-
-/* Product Modal */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    z-index: 3000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-    padding: 2rem;
-}
-
-.modal.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.modal-content {
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    max-width: 900px;
-    width: 100%;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    transform: scale(0.95);
-    transition: 0.3s;
-}
-
-.modal.active .modal-content {
-    transform: scale(1);
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.modal-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    /* Split layout */
-}
-
-.modal-image {
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-}
-
-.modal-image img {
-    max-width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
-}
-
-.modal-info {
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-cat {
-    color: var(--accent-blue);
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    font-weight: 600;
-}
-
-.modal-info h2 {
-    font-size: 2.5rem;
-    margin: 0.5rem 0;
-    line-height: 1.1;
-}
-
-.modal-price {
-    font-size: 2rem;
-    color: var(--text-main);
-    margin-bottom: 2rem;
-}
-
-.modal-desc h4 {
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    margin-bottom: 0.5rem;
-}
-
-.modal-desc p {
-    color: #ccc;
-    line-height: 1.8;
-    margin-bottom: 2rem;
-    white-space: pre-line;
-    /* Preserve line breaks */
-}
-
-.buy-btn.large {
-    width: 100%;
-    justify-content: center;
-    padding: 1rem;
-    font-size: 1.1rem;
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-
-    .logo {
-        font-size: 1.4rem;
-    }
-
-    .nav-container {
-        padding: 0 1rem;
-    }
-
-    /* Hero Section Mobile */
-    .hero-section {
-        padding-top: 100px;
-        padding-bottom: 40px;
-        min-height: auto;
-        text-align: center;
-    }
-
-    .hero-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .hero-text h1 {
-        font-size: 2.5rem;
-        /* Smaller font */
     }
 
     .hero-text p {
@@ -1147,7 +1016,7 @@ footer {
 
     .hero-img {
         max-height: 250px !important;
-        /* Smaller image */
+        max-width: 80%;
     }
 
     .cta-group {
@@ -1157,7 +1026,6 @@ footer {
     /* Product Grid Mobile - 2 Columns */
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
-        /* 2 Columns */
         gap: 1rem;
     }
 
@@ -1168,7 +1036,6 @@ footer {
     .image-wrapper {
         padding: 1rem;
         height: 150px;
-        /* Smaller image area */
     }
 
     .product-info {
@@ -1182,7 +1049,6 @@ footer {
     .price {
         font-size: 1.1rem;
         text-align: center;
-        /* Center price */
         margin-bottom: 0.2rem;
     }
 
@@ -1198,18 +1064,15 @@ footer {
         padding: 0.7rem;
     }
 
-    /* Mobile Touch Feedback */
-    .buy-btn:active,
-    .product-card:active {
-        transform: scale(0.96);
-        transition: transform 0.1s;
-    }
-
     /* Filter Drawer */
     .filter-drawer {
-        width: 100%;
-        /* Full width */
+        width: 85%;
+        /* Slightly less than full width looks better */
         left: -100%;
+    }
+
+    .filter-drawer.open {
+        left: 0;
     }
 
     /* Modal */
@@ -1220,6 +1083,7 @@ footer {
     .modal {
         padding: 0;
         align-items: flex-end;
+        /* Sheet style on mobile */
     }
 
     .modal-content {
@@ -1229,7 +1093,7 @@ footer {
 
     .modal-image {
         padding: 2rem;
-        max-height: 300px;
+        max-height: 250px;
     }
 
     .modal-info {

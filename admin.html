@@ -349,6 +349,7 @@
             <div id="tab-hero" class="tab-content">
                 <h3>Manage Slider</h3>
                 <form id="slide-form" style="margin-top: 1rem;">
+                    <input type="hidden" id="s-id">
                     <div class="form-group">
                         <label>Title</label>
                         <input type="text" id="s-title" class="form-control" required>
@@ -397,7 +398,11 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary" id="add-slide-btn">Add Slide</button>
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" class="btn-primary" id="s-submit-btn">Add Slide</button>
+                        <button type="button" class="btn-secondary" id="s-cancel-btn" style="display:none;"
+                            onclick="resetSlideForm()">Cancel</button>
+                    </div>
                 </form>
 
                 <div class="item-list" id="slide-list">
