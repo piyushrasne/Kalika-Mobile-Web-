@@ -318,10 +318,14 @@ function resetAutoSlider() {
 
 // Setup Event Listeners (Merged)
 function setupEventListeners() {
-    // Search Listener
+    // Search Listener with Debounce
+    let searchTimeout;
     if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            filterAndRenderProducts();
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                filterAndRenderProducts();
+            }, 300);
         });
     }
 
@@ -346,7 +350,11 @@ function setupEventListeners() {
     // Price Range
     priceRange.addEventListener('input', (e) => {
         priceValue.textContent = e.target.value;
-        filterAndRenderProducts();
+        // Debounce price slider too
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterAndRenderProducts();
+        }, 100);
     });
 
     // ... modal listeners ...

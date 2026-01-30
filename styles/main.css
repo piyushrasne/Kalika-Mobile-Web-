@@ -154,6 +154,11 @@ img {
     outline: none;
     width: 200px;
     font-size: 0.9rem;
+    transition: width 0.3s ease;
+}
+
+.search-box input:focus {
+    width: 250px;
 }
 
 .search-box input::placeholder {
@@ -376,7 +381,8 @@ input[type=range]::-webkit-slider-thumb {
 /* Hero Section */
 .hero-section {
     padding-top: 120px;
-    padding-bottom: 80px;
+    padding-bottom: 100px;
+    /* Increased for dots */
     position: relative;
     min-height: 90vh;
     display: flex;
@@ -897,10 +903,9 @@ footer {
 
     .nav-actions {
         display: flex;
-        /* Show actions */
-        gap: 0.8rem;
-        /* Increased gap */
+        gap: 0.5rem;
         align-items: center;
+        flex-shrink: 0;
     }
 
     .search-box {
@@ -909,52 +914,65 @@ footer {
     }
 
     .search-box input {
-        width: 60px;
-        /* Smaller width to prevent crowding */
+        width: 80px;
+        /* Bigger start width */
         font-size: 0.8rem;
+    }
+
+    .search-box input:focus {
+        width: 140px;
+        /* Expand on mobile */
     }
 
     .nav-container {
         padding: 0 1rem;
-        gap: 1rem;
-        /* Force gap between logo and actions */
+        gap: 0.5rem;
+        justify-content: space-between;
     }
 
     .logo {
-        font-size: 1.1rem;
-        /* Slightly smaller */
-        flex-shrink: 0;
-        /* Prevent logo from crushing */
-        margin-right: auto;
-        /* Push actions to the right, but keep gap */
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    /* Hide text on very small screens if needed, or keeping it but ensuring no break */
+    .logo span {
+        display: none;
+        /* Hide text on mobile to save space */
     }
 
     .logo img {
-        height: 30px !important;
-        /* Smaller logo image */
+        height: 35px !important;
     }
 
     .shop-layout {
         grid-template-columns: 1fr;
     }
 
-    .filters-sidebar {
-        position: relative;
-        top: 0;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0 0 1rem 0;
+    .hero-section {
+        padding-top: 100px;
+        padding-bottom: 60px;
+        /* Space for dots */
         min-height: auto;
+        text-align: center;
     }
 
     .hero-content {
         grid-template-columns: 1fr;
-        text-align: center;
-        gap: 3rem;
+        gap: 2rem;
+        padding-bottom: 2rem;
     }
 
     .hero-text h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+
+    .slider-dots {
+        bottom: 10px;
+        /* Position dots better on mobile */
     }
 }
 
