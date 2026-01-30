@@ -47,14 +47,11 @@
                 <!-- Hidden File Input for Image Search -->
                 <input type="file" id="image-upload" accept="image/*" style="display: none;">
 
-                <button class="icon-btn wishlist-btn" aria-label="Wishlist">
+                <button class="icon-btn wishlist-btn" id="nav-wishlist-btn" aria-label="Wishlist">
                     <i data-lucide="heart"></i>
                     <span class="wishlist-count">0</span>
                 </button>
-                <button class="icon-btn cart-btn" aria-label="Cart">
-                    <i data-lucide="shopping-bag"></i>
-                    <span class="cart-count">0</span>
-                </button>
+                <!-- Cart Removed as per request -->
             </div>
             <button class="mobile-menu-btn"><i data-lucide="menu"></i></button>
         </div>
@@ -69,25 +66,8 @@
     </section>
 
     <!-- Categories / Features -->
-    <section class="features-section">
-        <div class="container grid-features">
-            <div class="feature-card fade-up">
-                <i data-lucide="headphones"></i>
-                <h3>Noise Cancellation</h3>
-                <p>Block out the world, tune into you.</p>
-            </div>
-            <div class="feature-card fade-up" style="animation-delay: 0.1s;">
-                <i data-lucide="battery"></i>
-                <h3>40h Battery</h3>
-                <p>Non-stop music for your longest journeys.</p>
-            </div>
-            <div class="feature-card fade-up" style="animation-delay: 0.2s;">
-                <i data-lucide="bluetooth"></i>
-                <h3>Bluetooth 5.3</h3>
-                <p>Seamless connectivity, zero lag.</p>
-            </div>
-        </div>
-    </section>
+    <!-- Categories / Features (Removed as requested) -->
+    <!-- <section class="features-section"> ... </section> -->
 
     <!-- Products Section -->
     <section id="products" class="products-section">
@@ -155,6 +135,19 @@
             </div>
         </div>
     </section>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlist-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-modal" id="close-wishlist"><i data-lucide="x"></i></button>
+            <div style="padding: 2rem;">
+                <h2 style="margin-bottom: 1.5rem;">Your Wishlist</h2>
+                <div id="wishlist-grid" class="item-list" style="max-height: 60vh;">
+                    <!-- Wishlist Items Injected Here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Product Details Modal -->
     <div id="product-modal" class="modal">

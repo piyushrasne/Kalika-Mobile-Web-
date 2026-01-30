@@ -3,14 +3,14 @@
 // Initialize Data from LocalStorage (or seed defaults)
 
 const defaultProducts = [
-    { id: 1, name: "iPhone 15 Pro", category: "Mobiles", price: 134900, image: "https://images.unsplash.com/photo-1695048180490-7584d6af8088?q=80&w=500&auto=format&fit=crop" },
-    { id: 2, name: "Dell XPS 15", category: "Laptops", price: 185000, image: "https://images.unsplash.com/photo-1593642632823-8f785667771b?q=80&w=500&auto=format&fit=crop" },
-    { id: 3, name: "Sony WH-1000XM5", category: "Headphones", price: 29990, image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=500&auto=format&fit=crop" },
-    { id: 4, name: "Samsung S24 Ultra", category: "Mobiles", price: 129999, image: "https://images.unsplash.com/photo-1706606991536-e32260d85965?q=80&w=500&auto=format&fit=crop" },
-    { id: 5, name: "JBL Flip 6", category: "Speakers", price: 9999, image: "https://images.unsplash.com/photo-1629214736615-680455bb3269?q=80&w=500&auto=format&fit=crop" },
-    { id: 6, name: "Apple Watch Ultra", category: "Smartwatches", price: 89900, image: "https://images.unsplash.com/photo-1664743528139-4467d9834575?q=80&w=500&auto=format&fit=crop" },
-    { id: 7, name: "MacBook Air M2", category: "Laptops", price: 114900, image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=500&auto=format&fit=crop" },
-    { id: 8, name: "Sony Alpha a7 IV", category: "Cameras", price: 245000, image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop" }
+    { id: 1, name: "iPhone 15 Pro", category: "Mobiles", price: 134900, image: "https://images.unsplash.com/photo-1695048180490-7584d6af8088?q=60&w=400&auto=format&fit=crop" },
+    { id: 2, name: "Dell XPS 15", category: "Laptops", price: 185000, image: "https://images.unsplash.com/photo-1593642632823-8f785667771b?q=60&w=400&auto=format&fit=crop" },
+    { id: 3, name: "Sony WH-1000XM5", category: "Headphones", price: 29990, image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=60&w=400&auto=format&fit=crop" },
+    { id: 4, name: "Samsung S24 Ultra", category: "Mobiles", price: 129999, image: "https://images.unsplash.com/photo-1706606991536-e32260d85965?q=60&w=400&auto=format&fit=crop" },
+    { id: 5, name: "JBL Flip 6", category: "Speakers", price: 9999, image: "https://images.unsplash.com/photo-1629214736615-680455bb3269?q=60&w=400&auto=format&fit=crop" },
+    { id: 6, name: "Apple Watch Ultra", category: "Smartwatches", price: 89900, image: "https://images.unsplash.com/photo-1664743528139-4467d9834575?q=60&w=400&auto=format&fit=crop" },
+    { id: 7, name: "MacBook Air M2", category: "Laptops", price: 114900, image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=60&w=400&auto=format&fit=crop" },
+    { id: 8, name: "Sony Alpha a7 IV", category: "Cameras", price: 245000, image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=60&w=400&auto=format&fit=crop" }
 ];
 
 // Load from Main Store
@@ -50,38 +50,76 @@ if (!heroSlides || heroSlides.length === 0) {
 const heroSection = document.getElementById('home');
 
 const productGrid = document.getElementById('product-grid');
-const cartCount = document.querySelector('.cart-count');
-const wishlistCount = document.querySelector('.wishlist-count');
-const priceRange = document.getElementById('price-range');
-const priceValue = document.getElementById('price-value');
-const searchInput = document.getElementById('search-input');
-const imageSearchBtn = document.getElementById('image-search-btn');
-const imageUpload = document.getElementById('image-upload');
-
-// Modal Elements
-const modal = document.getElementById('product-modal');
-const closeModalBtn = document.getElementById('close-modal');
-const mImage = document.getElementById('m-image');
-const mCat = document.getElementById('m-cat');
-const mTitle = document.getElementById('m-title');
-const mPrice = document.getElementById('m-price');
-const mDesc = document.getElementById('m-desc');
-const mBuyBtn = document.getElementById('m-buy-btn');
-
-// Theme Toggle
-const themeBtn = document.getElementById('theme-toggle');
-
-// Drawer Elements
-const filterBtn = document.getElementById('filter-toggle-btn');
-const filterDrawer = document.getElementById('filter-drawer');
-const filterOverlay = document.getElementById('filter-overlay');
-const closeFilter = document.getElementById('close-filter');
-const dynamicCatContainer = document.getElementById('dynamic-cat-filters');
+const wishlistModal = document.getElementById('wishlist-modal');
+const closeWishlistBtn = document.getElementById('close-wishlist');
+const wishlistGrid = document.getElementById('wishlist-grid');
+const navWishlistBtn = document.getElementById('nav-wishlist-btn');
 
 // State
-let cart = 0;
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 let categories = JSON.parse(localStorage.getItem('categories')) || ["Mobiles", "Laptops", "Headphones", "Speakers", "Earbuds", "Smartwatches", "Cameras", "Accessories"];
+
+// ... (Existing Image Search Logic) ...
+
+// Wishlist Modal Logic
+navWishlistBtn.addEventListener('click', () => {
+    renderWishlist();
+    wishlistModal.classList.add('active');
+});
+
+closeWishlistBtn.addEventListener('click', () => {
+    wishlistModal.classList.remove('active');
+});
+
+wishlistModal.addEventListener('click', (e) => {
+    if (e.target === wishlistModal) wishlistModal.classList.remove('active');
+});
+
+function renderWishlist() {
+    if (wishlist.length === 0) {
+        wishlistGrid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Your wishlist is empty.</p>';
+        return;
+    }
+
+    const wishlistedProducts = products.filter(p => wishlist.includes(p.id));
+
+    wishlistGrid.innerHTML = wishlistedProducts.map(p => `
+        <div class="list-item" style="cursor: default;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <img src="${p.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                <div>
+                    <h4 style="margin: 0;">${p.name}</h4>
+                    <span style="color: var(--accent-blue);">₹${p.price}</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="action-btn edit" onclick="buyProduct(${p.id})" title="Buy Now">
+                    <i data-lucide="message-circle"></i>
+                </button>
+                <button class="action-btn delete" onclick="removeFromWishlist(${p.id})" title="Remove">
+                    <i data-lucide="trash-2"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+window.removeFromWishlist = (id) => {
+    const index = wishlist.indexOf(id);
+    if (index > -1) {
+        wishlist.splice(index, 1);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        updateWishlistCount();
+        renderWishlist(); // Re-render logic
+
+        // Update Grid Button state if visible
+        filterAndRenderProducts();
+    }
+}
+
+// ... (Existing Init) ...
 
 // Image Search Logic Improved
 imageSearchBtn.addEventListener('click', () => {
@@ -209,19 +247,13 @@ function renderHeroSlider() {
                     <span class="eyebrow">${slide.subtitle}</span>
                     <h1 class="glitch" data-text="${slide.title}">${slide.title}</h1>
                     
-                    <div class="features-grid" style="display: grid; gap: 15px; margin-bottom: 2rem; color: #ccc; font-size: 0.9rem; text-align: left;">
-                        ${slide.feat1_title ? `<div><strong style="color: var(--accent-blue); display: block;">${slide.feat1_title}</strong>${slide.feat1_desc}</div>` : ''}
-                        ${slide.feat2_title ? `<div><strong style="color: var(--accent-purple); display: block;">${slide.feat2_title}</strong>${slide.feat2_desc}</div>` : ''}
-                        ${slide.feat3_title ? `<div><strong style="color: #fff; display: block;">${slide.feat3_title}</strong>${slide.feat3_desc}</div>` : ''}
-                    </div>
-
                     <div class="cta-group">
                         <a href="#products" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
                 <div class="hero-visual">
                     <div class="circle-graphic"></div>
-                    <img src="${slide.image}" alt="${slide.title}" class="hero-img floating" style="max-height: 400px; object-fit: contain;">
+                    <img src="${slide.image}" alt="${slide.title}" class="hero-img floating" style="max-height: 400px; object-fit: contain;" fetchpriority="high">
                 </div>
             </div>
         `;
@@ -364,7 +396,7 @@ function renderProducts(items) {
                 <i data-lucide="heart" fill="${isWishlisted ? 'currentColor' : 'none'}"></i>
             </button>
             <div class="image-wrapper" onclick="openProductDetails(${product.id})" style="cursor: pointer;">
-                <img src="${product.image}" alt="${product.name}" class="product-img">
+                <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy">
             </div>
             <div class="product-info">
                 <span class="product-category">${product.category}</span>
@@ -448,11 +480,7 @@ Please share payment details.`;
     window.open(whatsappUrl, '_blank');
 }
 
-// Add to Cart Logic (Keeping it just in case, but UI now prioritizes Buy Now)
-window.addToCart = (id) => {
-    cart++;
-    cartCount.textContent = cart;
-}
+// Cart logic removed
 
 // Scroll Animations
 function initScrollAnimations() {

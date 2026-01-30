@@ -891,9 +891,47 @@ footer {
 
 @media (max-width: 768px) {
 
-    .nav-links,
-    .nav-actions {
+    .nav-links {
         display: none;
+    }
+
+    .nav-actions {
+        display: flex;
+        /* Show actions */
+        gap: 0.8rem;
+        /* Increased gap */
+        align-items: center;
+    }
+
+    .search-box {
+        padding: 0 0.5rem;
+        width: auto;
+    }
+
+    .search-box input {
+        width: 60px;
+        /* Smaller width to prevent crowding */
+        font-size: 0.8rem;
+    }
+
+    .nav-container {
+        padding: 0 1rem;
+        gap: 1rem;
+        /* Force gap between logo and actions */
+    }
+
+    .logo {
+        font-size: 1.1rem;
+        /* Slightly smaller */
+        flex-shrink: 0;
+        /* Prevent logo from crushing */
+        margin-right: auto;
+        /* Push actions to the right, but keep gap */
+    }
+
+    .logo img {
+        height: 30px !important;
+        /* Smaller logo image */
     }
 
     .shop-layout {
