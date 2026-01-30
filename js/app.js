@@ -54,6 +54,30 @@ const wishlistModal = document.getElementById('wishlist-modal');
 const closeWishlistBtn = document.getElementById('close-wishlist');
 const wishlistGrid = document.getElementById('wishlist-grid');
 const navWishlistBtn = document.getElementById('nav-wishlist-btn');
+const wishlistCount = document.querySelector('.wishlist-count');
+
+// Search & Filter Elements
+const searchInput = document.getElementById('search-input');
+const themeBtn = document.getElementById('theme-toggle');
+const imageSearchBtn = document.getElementById('image-search-btn');
+const imageUpload = document.getElementById('image-upload');
+const filterBtn = document.getElementById('filter-toggle-btn');
+const filterDrawer = document.getElementById('filter-drawer');
+const filterOverlay = document.getElementById('filter-overlay');
+const closeFilter = document.getElementById('close-filter');
+const priceRange = document.getElementById('price-range');
+const priceValue = document.getElementById('price-value');
+const dynamicCatContainer = document.getElementById('dynamic-cat-filters');
+
+// Product Modal Elements
+const modal = document.getElementById('product-modal');
+const closeModalBtn = document.getElementById('close-modal');
+const mImage = document.getElementById('m-image');
+const mCat = document.getElementById('m-cat');
+const mTitle = document.getElementById('m-title');
+const mPrice = document.getElementById('m-price');
+const mDesc = document.getElementById('m-desc');
+const mBuyBtn = document.getElementById('m-buy-btn');
 
 // State
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
